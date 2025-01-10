@@ -1,82 +1,31 @@
-import {TrolleyIcon} from "@sanity/icons"
-import { subtle } from "crypto"
-import { title } from "process"
-import {defineField, defineType} from 'sanity'
+import { TrolleyIcon } from "@sanity/icons";
+import { defineField, defineType } from 'sanity';
+
 export const productType = defineType({
-    name: 'products',
-    title: 'Products',
+    name: 'product',
+    title: 'Product',
     type: 'document',
-    icon : TrolleyIcon,
+    icon: TrolleyIcon,
     fields: [
+        defineField({ name: 'name', title: 'Product Name', type: 'string' }),
+        defineField({ name: 'description', title: 'Description', type: 'text' }),
         defineField({
-            name: 'productID',
-            title: 'Product ID',
-            type: 'string',
+            name: 'category',
+            title: 'Category',
+            type: 'reference',
+            to: [{ type: 'category' }],
         }),
         defineField({
-            name: 'productName',
-            title: 'Product Name',
-            type: 'string',
-            validation: (Rule) => Rule.required(),  
-        }),
-        defineField({
-            name: 'Slug',
-            title: 'Slug',
-            type: 'slug',
-            options: {
-                source: 'productName',
-                maxLength: 96,
-            },
-        }),
-        defineField({
-            name: 'Image',
-            title: 'Product Image',
-            type: 'image',
-            options: {
-                hotspot: true,
-            },
-        }),
-        defineField({
-            name: 'description',
-            title: 'Description',
-            type: 'blockContent',
-        }),
-        defineField({
-            name: 'price',
-            title: 'Price',
-            type: 'number',
-            validation: (Rule) => Rule.required().min(0),
-        }),
-        defineField({
-            name: 'stockQuantity',
-            title: 'Stock Quantity',
-            type: 'number',
-        }),
-        defineField({
-            name: 'categories',
-            title: 'Categories',
+            name: 'specifications',
+            title: 'Specifications',
             type: 'array',
-            of: [{type: 'reference', to: {type: 'category'}}],
+            of: [{ type: 'specification' }],
         }),
         defineField({
-            name: 'dateAdded',
-            title: 'Date Added',
-            type: 'datetime',
-        })
+            name: 'variations',
+            title: 'Variations',
+            type: 'array',
+            of: [{ type: 'colorVariation' }],
+        }),
     ],
-    preview:{
-        select: {
-            title   : 'productName',
-            media   : 'Image',
-            subtitle: 'price',
-    },
-    prepare(selection){
-        return {
-            title: selection.title,
-            media: selection.media,
-            subtitle: `$${selection.subtitle}`,
-        }
-    }
-}
-}
-);
+});

@@ -1,0 +1,17 @@
+import { defineQuery } from "next-sanity";
+import { sanityFetch } from "./live";
+
+async function getProductDetail(_id) {
+    const product_details = defineQuery(`
+        *[_type == "products" && _id == "1986b73d-683f-4a04-8e31-2126d463ed1a"] 
+        `);
+   try {
+    const products = await sanityFetch({query: product_details});
+    return products;
+} catch (error) {
+    console.error(error);
+    return [];
+};
+}
+
+export default getProductDetail

@@ -7,8 +7,13 @@ import TrendingSection from "@/components/TrendingSection";
 import OurCatalog from "@/components/OurCatalog";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { getTrendTypes } from "@/sanity/lib/getTrend";
+import { getAllProducts } from "@/sanity/lib/getAllProducts";
 
-export default function Home() {
+
+export default  async function Home() {
+  const trendTypes = (await getTrendTypes()).data;
+  const products = await getAllProducts();
   return (
     <>
     <Navbar />
@@ -16,8 +21,17 @@ export default function Home() {
     <Section_title Text ="Trending" />
     <div className="sm:grid 
     grid-cols-2 md:grid-cols-3  gap-4 py-8 px-20">
-      <TrendingSection trendingSrc='https://images.bewakoof.com/web/trending-spring-outfits-for-girls-bewakoof-blog-4-1620740562.jpg' trendingAlt="test" trendingTitle='Next level' startingPrice={20} />
+      {trendTypes.map((trend, index) => (
+      <TrendingSection 
+        key={index}
+        trendingSrc={trend.image.asset._ref} 
+        trendingAlt={trend.imageName} 
+        trendingTitle={trend.imageName} 
+        startingPrice={trend.startingPrice} 
+      />
+      ))}
     </div>
+    
 
     <Section_title Text ="Wholesale clothing" />
     <div className="sm:grid 
