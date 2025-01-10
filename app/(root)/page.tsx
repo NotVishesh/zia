@@ -12,6 +12,7 @@ import { getAllProducts } from "@/sanity/lib/getAllProducts";
 
 
 export default  async function Home() {
+  //Todo: Fetch the category ,  trending , Ourcatalog from the API
   const trendTypes = (await getTrendTypes()).data;
   const products = await getAllProducts();
   return (
